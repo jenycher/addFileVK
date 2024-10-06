@@ -15,7 +15,7 @@ root = tk.Tk()
 root.title("VK Video Poster")
 
 # Поля для ввода данных
-group_id_var = tk.StringVar()
+group_id_var = tk.StringVar() #227722683
 video_folder_var = tk.StringVar()
 description_var = tk.StringVar()
 access_token_var = tk.StringVar()
@@ -36,12 +36,15 @@ def post_video_to_vk(video_path, description, group_id, access_token):
 
         # 1. Получаем сервер для загрузки видео
         response = vk.video.save(group_id=group_id, description=description)
+        logging.info("Получили сервер для загрузки1")
         upload_url = response['upload_url']
+        logging.info("Получили сервер для загрузки2")
 
         # 2. Загружаем видео на сервер ВК
         with open(video_path, 'rb') as video_file:
             files = {'video_file': video_file}
             upload_response = requests.post(upload_url, files=files)
+            logging.info("Загружаем видео")
 
         # Проверяем результат загрузки
         if upload_response.status_code == 200 and upload_response.json().get("video_id"):
